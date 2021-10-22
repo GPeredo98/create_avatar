@@ -1,0 +1,33 @@
+<div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <div class="card-register">
+        <h3 style="text-align: center; margin-bottom: 30px;">Crear cuenta</h3>
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="nombres" placeholder="Nombres" [(ngModel)]="form.nombres">
+            <label for="nombres">Nombres</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="apellidos" placeholder="Apellidos" [(ngModel)]="form.apellidos">
+            <label for="apellidos">Apellidos</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="correo" placeholder="Correo" [(ngModel)]="form.correo">
+            <label for="correo">Correo</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="contrasenha" placeholder="Contraseña" [(ngModel)]="form.contrasenha">
+            <label for="contrasenha">Contraseña</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="contrasenhaRepeat" placeholder="Repita la contraseña" [(ngModel)]="form.contrasenhaRepeat">
+            <label for="contrasenhaRepeat">Repita la contraseña</label>
+        </div>
+        <div class="d-grid gap-2 col-6 mx-auto mt-3">
+            <button class="btn btn-secondary" (click)="registrarUsuario()">REGISTRARSE</button>
+        </div>
+        <div style="text-align: center; position: relative; top: 25px;">
+            <span>¿Ya tiene una cuenta? <a href="/login">Inicie sesión</a></span>
+        </div>
+
+    </div>
+</div>
