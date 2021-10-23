@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify, request, make_response
-import flask
 from flask_cors.decorator import cross_origin
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from utilities import db
@@ -32,8 +31,46 @@ def obtener_datos_usuario(id_user):
         return jsonify({'data': str(e), 'success': False, 'message': 'Ocurrió un error en el servidor'})
 
 @users.route('/registrar', methods=['POST'])
-@cross_origin()
 def registrar_usuario():
-    response = flask.jsonify({'some': 'data'})
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+    try:
+        nombres = request.json['nombres']
+        apellidos = request.json['apellidos']
+        correo = request.json['correo']
+        contrasenha = request.json['contrasenha'] # 'paulo1'
+        contrasenha_hasheada = bcrypt.hashpw(contrasenha.encode('utf-8'), bcrypt.gensalt()) # b'$2b$12$XAxZikWeb2jlP1GwIVUh9.RFgb4.NtoUHqrd/iyG6f9TLiVQb17A.'
+
+        nuevo_usuario = User(nombres, apellidos, correo, contrasenha_hasheada)
+        token = create_access_token(identity={'id': nuevo_usuario.id, 'correo': nuevo_usuario.email})
+
+        db.session.add(nuevo_usuario)
+        db.session.commit()
+        return jsonify(
+            {
+                'data': {'usuario': User.Schema().dump(nuevo_usuario), 'token': token},
+                'success': True,
+                'message': 'Usuario registrado'
+            })
+    except Exception as e:
+        return jsonify({'data': str(e), 'success': False, 'message': 'Ocurrió un error en el servidor'})
+
+@users.route('/login', methods=['POST'])
+def login_usuario():
+    try:
+        usuario = User.query.filter(User.email == request.json['correo']).first()
+        if usuario is not None and bcrypt.checkpw(request.json['contrasenha'].encode('utf8'), usuario.password.encode('utf8')):
+            token = create_access_token(identity={'id': usuario.id, 'correo': usuario.email})
+            return jsonify(
+                {
+                    'data': {'usuario': User.Schema().dump(usuario), 'token': token},
+                    'success': True,
+                    'message': 'Login exitoso'
+                })
+        else:
+            return jsonify(
+                {
+                    'data': "",
+                    'success': False,
+                    'message': 'Usuario y/o contraseña incorrecta'
+                })
+    except Exception as e:
+        return jsonify({'data': str(e), 'success': False, 'message': 'Ocurrió un error en el servidor'})

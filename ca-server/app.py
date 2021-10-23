@@ -9,15 +9,12 @@ from users.views import users
 def create_app(config_file='settings.py'):
     application = Flask(__name__)
     application.config.from_pyfile(config_file)
-    # CORS(application)
-    CORS(application, origins=['*'])
-    #cors = CORS(application, resources={r"/api/*": {"origins": "*"}})
+    CORS(application)
     ma.init_app(application)
     jwt.init_app(application)
     db.init_app(application)
     with application.app_context():
         db.create_all()
-    #application.register_blueprint(productos, url_prefix='/producto')
     application.register_blueprint(users, url_prefix='/users')
     return application
 
