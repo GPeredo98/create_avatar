@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, make_response
+from flask import Blueprint, jsonify, request, send_file
 from flask_cors.decorator import cross_origin
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from utilities import db
@@ -75,3 +75,11 @@ def login_usuario():
                 })
     except Exception as e:
         return jsonify({'data': str(e), 'success': False, 'message': 'Ocurrió un error en el servidor'})
+
+@users.route('/get_images/<image>')
+def get_image(image):
+    if request.args.get('type') == '1':
+       filename = 'ok.gif'
+    else:
+       filename = 'static/images/atuendos/'+image+'.png'
+    return send_file(filename, mimetype='image/gif')
