@@ -20,14 +20,23 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   registrarUsuario(form: any) {
-    const link = this.URL + 'users/registrar/';
+    const link = this.URL + 'users/registrar';
     const body = {
-      nombres: form.nombre,
+      nombres: form.nombres,
       apellidos: form.apellidos,
       correo: form.correo,
       contrasenha: form.contrasenha
     }
-    return this.http.post(link, body, this.headers);
+    return this.http.post(link, body);
+  }
+
+  loginUsuario(form: any) {
+    const link = this.URL + 'users/login';
+    const body = {
+      correo: form.correo,
+      contrasenha: form.contrasenha
+    }
+    return this.http.post(link, body);
   }
 
   obtenerUsuarios() {

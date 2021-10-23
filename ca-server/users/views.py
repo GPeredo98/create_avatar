@@ -31,23 +31,17 @@ def obtener_datos_usuario(id_user):
     except Exception as e:
         return jsonify({'data': str(e), 'success': False, 'message': 'Ocurrió un error en el servidor'})
 
-@users.route('/registrar', methods=['POST', 'OPTIONS'])
+@users.route('/registrar', methods=['POST'])
 def registrar_usuario():
     try:
-        if request.method == "OPTIONS": # CORS preflight
-            return _build_cors_preflight_response()
         nombres = request.json['nombres']
         apellidos = request.json['apellidos']
-        telefono = request.json['telefono']
         correo = request.json['correo']
-        estado = request.json['estado']
-        imagen = request.json['imagen']
+        contrasenha = request.json['contrasenha'] # 'paulo1'
+        contrasenha_hasheada = bcrypt.hashpw(contrasenha.encode('utf-8'), bcrypt.gensalt()) # b'$2b$12$XAxZikWeb2jlP1GwIVUh9.RFgb4.NtoUHqrd/iyG6f9TLiVQb17A.'
 
-        contrasenha = request.json['contrasenha']
-        contrasenha_hasheada = bcrypt.hashpw(contrasenha.encode('utf-8'), bcrypt.gensalt())
-
-        nuevo_usuario = User(nombres, apellidos, telefono, correo, contrasenha_hasheada, estado, imagen)
-        token = create_access_token(identity={'id': nuevo_usuario.id, 'correo': nuevo_usuario.correo})
+        nuevo_usuario = User(nombres, apellidos, correo, contrasenha_hasheada)
+        token = create_access_token(identity={'id': nuevo_usuario.id, 'correo': nuevo_usuario.email})
 
         db.session.add(nuevo_usuario)
         db.session.commit()
@@ -60,9 +54,24 @@ def registrar_usuario():
     except Exception as e:
         return jsonify({'data': str(e), 'success': False, 'message': 'Ocurrió un error en el servidor'})
 
-def _build_cors_preflight_response():
-    response = make_response()
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add('Access-Control-Allow-Headers', "*")
-    response.headers.add('Access-Control-Allow-Methods', "*")
-    return response
+@users.route('/login', methods=['POST'])
+def login_usuario():
+    try:
+        usuario = User.query.filter(User.email == request.json['correo']).first()
+        if usuario is not None and bcrypt.checkpw(request.json['contrasenha'].encode('utf8'), usuario.password.encode('utf8')):
+            token = create_access_token(identity={'id': usuario.id, 'correo': usuario.email})
+            return jsonify(
+                {
+                    'data': {'usuario': User.Schema().dump(usuario), 'token': token},
+                    'success': True,
+                    'message': 'Login exitoso'
+                })
+        else:
+            return jsonify(
+                {
+                    'data': "",
+                    'success': False,
+                    'message': 'Usuario y/o contraseña incorrecta'
+                })
+    except Exception as e:
+        return jsonify({'data': str(e), 'success': False, 'message': 'Ocurrió un error en el servidor'})

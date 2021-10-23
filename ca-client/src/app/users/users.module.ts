@@ -8,6 +8,7 @@ import { HomeComponent } from './components/home/home.component';
 
 
 
+
 @NgModule({
   declarations: [
     LoginComponent,
@@ -20,8 +21,7 @@ import { HomeComponent } from './components/home/home.component';
   ],
   imports: [
     CommonModule,
-    FormsModule
-  ],
-  entryComponents: []
+    FormsModule,
+  ]
 })
 export class UsersModule { }
