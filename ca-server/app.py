@@ -9,9 +9,10 @@ from users.views import users
 def create_app(config_file='settings.py'):
     application = Flask(__name__)
     application.config.from_pyfile(config_file)
-    # CORS(application)
+    #CORS(application)
     CORS(application, origins=['*'])
-    #cors = CORS(application, resources={r"/api/*": {"origins": "*"}})
+    #CORS(application, support_credentials=True)
+    #CORS(application, resources={r"*": {"origins": "*"}})
     ma.init_app(application)
     jwt.init_app(application)
     db.init_app(application)

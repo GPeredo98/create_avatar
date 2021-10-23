@@ -10,6 +10,7 @@ export class AuthService {
   URL: string = environment.api_url;
   headers: any = { headers: new HttpHeaders({
     'Content-type': 'application/json',
+    "Accept": "application/json",
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
@@ -27,5 +28,10 @@ export class AuthService {
       contrasenha: form.contrasenha
     }
     return this.http.post(link, body, this.headers);
+  }
+
+  obtenerUsuarios() {
+    const link = this.URL + 'users/list/';
+    return this.http.get(link, this.headers);
   }
 }

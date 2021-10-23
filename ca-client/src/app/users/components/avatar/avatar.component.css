@@ -1,0 +1,43 @@
+.avatar-container {
+    background-color: antiquewhite;
+    max-width: 150px;
+    position: relative;
+}
+
+.cabello {
+    position: absolute; 
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 50;
+}
+
+.piel {
+    position: absolute; 
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 40;
+}
+
+.rostro {
+    position: absolute;
+    top: 32px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 45;
+}
+
+.atuendo {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -100px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 45;
+}
