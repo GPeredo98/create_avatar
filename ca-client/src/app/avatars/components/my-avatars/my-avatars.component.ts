@@ -18,6 +18,7 @@ export class MyAvatarsComponent implements OnInit {
   avatar: any = {};
   misAvatares: any = [];
   guardar: boolean = true;
+  nombre: string = "";
 
   @ViewChild('closeModal') closeModal: ElementRef | undefined;
   @ViewChild('openModal') openModal: ElementRef | undefined;
@@ -63,27 +64,26 @@ export class MyAvatarsComponent implements OnInit {
   }
 
   guardarAvatar() {
+    this.avatar.nombre = this.nombre;
+    let user =  JSON.parse(localStorage.getItem('usuario') || '{}')
+    this.avatar.fk_user = user.id;
     if(this.guardar) {
-      this.avatar.nombre = "Sin nombre";
-      let user =  JSON.parse(localStorage.getItem('usuario') || '{}')
-      this.avatar.fk_user = user.id;
       this.avatarService.guardarAvatar(this.avatar).subscribe((res: any) => {
         if (this.closeModal) this.closeModal.nativeElement.click();
         this.obtenerMisAvatares();
         this.avatar = {};
+        this.nombre = "";
         this.toastr.success(res.message, '', {
           timeOut: 3000,
           positionClass: 'toast-bottom-right',
         });
       })
     } else {
-      this.avatar.nombre = "Sin nombre";
-      let user =  JSON.parse(localStorage.getItem('usuario') || '{}')
-      this.avatar.fk_user = user.id;
       this.avatarService.editarAvatar(this.avatar).subscribe((res: any) => {
         if (this.closeModal) this.closeModal.nativeElement.click();
         this.obtenerMisAvatares();
         this.avatar = {};
+        this.nombre = "";
         this.toastr.success(res.message, '', {
           timeOut: 3000,
           positionClass: 'toast-bottom-right',
@@ -92,8 +92,15 @@ export class MyAvatarsComponent implements OnInit {
     }
   }
 
+  nuevoAvatar() {
+    this.guardar = true;
+    this.nombre = "";
+    this.avatar = {};
+  }
+
   editarAvatar(avatar: any) {
     this.avatar = avatar;
+    this.nombre = avatar.nombre;
     this.guardar = false;
     if (this.openModal) this.openModal.nativeElement.click();
   }
@@ -101,6 +108,7 @@ export class MyAvatarsComponent implements OnInit {
   copiarAvatar(avatar: any) {
     this.avatar = avatar;
     this.guardar = true;
+    this.nombre = "";
     if (this.openModal) this.openModal.nativeElement.click();
   }
 

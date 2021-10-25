@@ -1,6 +1,6 @@
 <div style="display: flex; justify-content: center; margin: 50px;">
   <h2 style="margin-right: 20px;">My Avatars</h2>
-  <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="guardar=true">
+  <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="nuevoAvatar()">
     <i class="bi bi-plus-lg"></i>
   </button>
   <button #openModal type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" style="display: none;">
@@ -92,16 +92,21 @@
         </div>
 
         <div style="display: flex; flex-direction: column; padding-top: 40px;">
-          <app-avatar
-            [piel]="avatar.piel"
-            [rostro]="avatar.rostro"
-            [cabello]="avatar.cabello"
-            [atuendo]="avatar.atuendo"
-            [lente]="avatar.lente"
-            [vellofacial]="'http://127.0.0.1:5000/avatars/vellofacial2'"
-            [sombrero]="'http://127.0.0.1:5000/avatars/sombrero2'">
-          </app-avatar>
-          <button type="button" class="btn btn-dark bt" (click)="guardarAvatar()">Save changes</button>
+          <div class="mb-3">
+            <input type="email" class="form-control" style="width: 100%;" id="nombre" placeholder="Name" [(ngModel)]="nombre">
+          </div>
+          <div style="display: flex; justify-content: center;">
+            <app-avatar
+              [piel]="avatar.piel"
+              [rostro]="avatar.rostro"
+              [cabello]="avatar.cabello"
+              [atuendo]="avatar.atuendo"
+              [lente]="avatar.lente"
+              [vellofacial]="'http://127.0.0.1:5000/avatars/vellofacial2'"
+              [sombrero]="'http://127.0.0.1:5000/avatars/sombrero2'">
+            </app-avatar>
+          </div>
+          <button type="button" class="btn btn-dark bt" (click)="guardarAvatar()" [disabled]="nombre == ''">Save changes</button>
           <button type="button" class="btn btn-dark bt" (click)="avatar={}">Clear</button>
           <button type="button" class="btn btn-secondary bt" data-bs-dismiss="modal">Close</button>
         </div>

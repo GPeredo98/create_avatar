@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { AvatarService } from 'src/app/avatars/services/avatar.service';
 
 @Component({
@@ -9,10 +10,24 @@ import { AvatarService } from 'src/app/avatars/services/avatar.service';
 export class HomeComponent implements OnInit {
 
   avatares: any = []
+  pieles: any = [];
+  rostros: any = [];
+  cabellos: any = [];
+  atuendos: any = [];
+  lentes: any = [];
 
-  constructor(private avatarService: AvatarService) { }
+  avatar: any = {};
+  misAvatares: any = [];
+  guardar: boolean = true;
+  nombre: string = "";
+
+  @ViewChild('closeModal') closeModal: ElementRef | undefined;
+  @ViewChild('openModal') openModal: ElementRef | undefined;
+
+  constructor(private avatarService: AvatarService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.obtenerCaracteristicas();
     this.obtenerAvatares();
   }
 
@@ -23,10 +38,86 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  obtenerCaracteristicas() {
+    this.avatarService.obtenerCaracteristicas().subscribe((res: any) => {
+      this.pieles = res.data.pieles;
+      this.rostros = res.data.rostros;
+      this.cabellos = res.data.cabellos;
+      this.lentes = res.data.lentes;
+      this.atuendos = res.data.atuendos;
+    });
+  }
+
+  aplicarItem(item: any) {
+    switch (item.tipo) {
+      case 1:
+        this.avatar.piel = 'http://127.0.0.1:5000/avatars/'+item.imagen;
+        break;
+      case 2:
+        this.avatar.rostro = 'http://127.0.0.1:5000/avatars/'+item.imagen;
+        break;
+      case 3:
+        this.avatar.atuendo = 'http://127.0.0.1:5000/avatars/'+item.imagen;
+        break;
+      case 4:
+        this.avatar.cabello = 'http://127.0.0.1:5000/avatars/'+item.imagen;
+        break;
+      case 5:
+        this.avatar.lente = 'http://127.0.0.1:5000/avatars/'+item.imagen;
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  guardarAvatar() {
+    this.avatar.nombre = this.nombre;
+    let user =  JSON.parse(localStorage.getItem('usuario') || '{}')
+    this.avatar.fk_user = user.id;
+    if(this.guardar) {
+      this.avatarService.guardarAvatar(this.avatar).subscribe((res: any) => {
+        if (this.closeModal) this.closeModal.nativeElement.click();
+        this.obtenerAvatares();
+        this.avatar = {};
+        this.nombre = "";
+        this.toastr.success(res.message, '', {
+          timeOut: 3000,
+          positionClass: 'toast-bottom-right',
+        });
+      })
+    } else {
+      this.avatarService.editarAvatar(this.avatar).subscribe((res: any) => {
+        if (this.closeModal) this.closeModal.nativeElement.click();
+        this.obtenerAvatares();
+        this.avatar = {};
+        this.nombre = "";
+        this.toastr.success(res.message, '', {
+          timeOut: 3000,
+          positionClass: 'toast-bottom-right',
+        });
+      })
+    }
+  }
+
+  nuevoAvatar() {
+    this.guardar = true;
+    this.nombre = "";
+    this.avatar = {};
+  }
+
+  editarAvatar(avatar: any) {
+    this.avatar = avatar;
+    this.nombre = avatar.nombre;
+    this.guardar = false;
+    if (this.openModal) this.openModal.nativeElement.click();
+  }
+
   copiarAvatar(avatar: any) {
-    // this.avatar = avatar;
-    // this.guardar = true;
-    // if (this.openModal) this.openModal.nativeElement.click();
+    this.avatar = avatar;
+    this.guardar = true;
+    this.nombre = "";
+    if (this.openModal) this.openModal.nativeElement.click();
   }
 
 }

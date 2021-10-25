@@ -4,6 +4,7 @@ import { MakerComponent } from './components/maker/maker.component';
 import { MyAvatarsComponent } from './components/my-avatars/my-avatars.component';
 import { UsersModule } from '../users/users.module';
 import { AvatarComponent } from './components/avatar/avatar.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -17,7 +18,8 @@ import { AvatarComponent } from './components/avatar/avatar.component';
     AvatarComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ]
 })
 export class AvatarsModule { }

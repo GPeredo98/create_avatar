@@ -1,27 +1,114 @@
 <div style="display: flex; justify-content: center; margin: 50px;">
-    <h2 style="margin-right: 20px;">The Avatars</h2>
+  <h2 style="margin-right: 20px;">The Avatars</h2>
+  <button #openModal type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" style="display: none;">
+    <i class="bi bi-plus-lg"></i>
+  </button>
+</div>
+
+<div class="avatars-container">
+  <div class="my-avatar" *ngFor="let avatar of avatares">
+
+    <div class="dropdown">
+      <app-avatar type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+        [piel]="avatar.piel"
+        [rostro]="avatar.rostro"
+        [cabello]="avatar.cabello"
+        [atuendo]="avatar.atuendo"
+        [lente]="avatar.lente">
+      </app-avatar>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item" (click)="copiarAvatar(avatar)">Copiar</a></li>
+      </ul>
+    </div>
+
+    
+    <div style="max-width: 150px;">
+      <span>{{ avatar.nombre }}</span>
+    </div>
   </div>
-  
-  <div class="avatars-container">
-    <div class="my-avatar" *ngFor="let avatar of avatares">
-  
-      <div class="dropdown">
-        <app-avatar type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
-          [piel]="avatar.piel"
-          [rostro]="avatar.rostro"
-          [cabello]="avatar.cabello"
-          [atuendo]="avatar.atuendo"
-          [lente]="avatar.lente">
-        </app-avatar>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" (click)="copiarAvatar(avatar)">Copiar</a></li>
-        </ul>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create avatar</h5>
+        <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-  
-      
-      <div style="max-width: 150px;">
-        <span>{{ avatar.nombre }}</span>
+      <div class="modal-body d-flex" style="justify-content: space-around;">
+        <div style="width: 65%;">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="piel-tab" data-bs-toggle="tab" data-bs-target="#piel" type="button" role="tab" aria-controls="piel" aria-selected="true">Piel</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="rostro-tab" data-bs-toggle="tab" data-bs-target="#rostro" type="button" role="tab" aria-controls="rostro" aria-selected="false">Rostro</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="cabello-tab" data-bs-toggle="tab" data-bs-target="#cabello" type="button" role="tab" aria-controls="cabello" aria-selected="false">Cabello</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="atuendo-tab" data-bs-toggle="tab" data-bs-target="#atuendo" type="button" role="tab" aria-controls="atuendo" aria-selected="false">Atuendo</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="lentes-tab" data-bs-toggle="tab" data-bs-target="#lentes" type="button" role="tab" aria-controls="lentes" aria-selected="false">Lentes</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent" style="border: solid 1px #dee2e6; padding: 10px;">
+            <div class="tab-pane fade show active" id="piel" role="tabpanel" aria-labelledby="home-tab">
+              <div *ngFor="let item of pieles" class="item" (click)="aplicarItem(item)">
+                <img [src]="'http://127.0.0.1:5000/avatars/'+item.imagen" alt="">
+              </div>
+            </div>
+            <div class="tab-pane fade" id="rostro" role="tabpanel" aria-labelledby="profile-tab">
+              <div *ngFor="let item of rostros" class="item" (click)="aplicarItem(item)">
+                <img [src]="'http://127.0.0.1:5000/avatars/'+item.imagen" alt="">
+              </div>
+            </div>
+            <div class="tab-pane fade" id="cabello" role="tabpanel" aria-labelledby="contact-tab">
+              <div *ngFor="let item of cabellos" class="item" (click)="aplicarItem(item)">
+                <img [src]="'http://127.0.0.1:5000/avatars/'+item.imagen" alt="">
+              </div>
+            </div>
+            <div class="tab-pane fade" id="atuendo" role="tabpanel" aria-labelledby="contact-tab">
+              <div *ngFor="let item of atuendos" class="item" (click)="aplicarItem(item)">
+                <img [src]="'http://127.0.0.1:5000/avatars/'+item.imagen" alt="">
+              </div>
+            </div>
+            <div class="tab-pane fade" id="lentes" role="tabpanel" aria-labelledby="contact-tab">
+              <div *ngFor="let item of lentes" class="item" (click)="aplicarItem(item)">
+                <img [src]="'http://127.0.0.1:5000/avatars/'+item.imagen" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; padding-top: 40px;">
+          <div class="mb-3">
+            <input type="email" class="form-control" style="width: 100%;" id="nombre" placeholder="Name" [(ngModel)]="nombre">
+          </div>
+          <div style="display: flex; justify-content: center;">
+            <app-avatar
+              [piel]="avatar.piel"
+              [rostro]="avatar.rostro"
+              [cabello]="avatar.cabello"
+              [atuendo]="avatar.atuendo"
+              [lente]="avatar.lente"
+              [vellofacial]="'http://127.0.0.1:5000/avatars/vellofacial2'"
+              [sombrero]="'http://127.0.0.1:5000/avatars/sombrero2'">
+            </app-avatar>
+          </div>
+          <button type="button" class="btn btn-dark bt" (click)="guardarAvatar()" [disabled]="nombre == ''">Save changes</button>
+          <button type="button" class="btn btn-dark bt" (click)="avatar={}">Clear</button>
+          <button type="button" class="btn btn-secondary bt" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        
       </div>
     </div>
   </div>
-  
+</div>
