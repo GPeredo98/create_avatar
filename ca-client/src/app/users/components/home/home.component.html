@@ -1,10 +1,27 @@
-<p>home works!</p>
-<app-avatar
-    [piel]="'assets/images/pieles/piel2.png'"
-    [rostro]="'assets/images/rostros/rostro8.png'"
-    [cabello]="'assets/images/cabello/cabello5.png'"
-    [atuendo]="'http://127.0.0.1:5000/users/get_images'"
-    [lentes]="'assets/images/lentes/lente3.png'"
-    [vellofacial]="'cabello'"
-    [sombrero]="'cabello'">
-</app-avatar>
+<div style="display: flex; justify-content: center; margin: 50px;">
+    <h2 style="margin-right: 20px;">The Avatars</h2>
+  </div>
+  
+  <div class="avatars-container">
+    <div class="my-avatar" *ngFor="let avatar of avatares">
+  
+      <div class="dropdown">
+        <app-avatar type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+          [piel]="avatar.piel"
+          [rostro]="avatar.rostro"
+          [cabello]="avatar.cabello"
+          [atuendo]="avatar.atuendo"
+          [lente]="avatar.lente">
+        </app-avatar>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" (click)="copiarAvatar(avatar)">Copiar</a></li>
+        </ul>
+      </div>
+  
+      
+      <div style="max-width: 150px;">
+        <span>{{ avatar.nombre }}</span>
+      </div>
+    </div>
+  </div>
+  

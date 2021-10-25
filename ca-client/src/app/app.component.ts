@@ -21,7 +21,9 @@ export class AppComponent implements OnInit {
 
   logout() {
     localStorage.clear();
-    window.location.reload();
+    this.router.navigateByUrl('/home').then((res: any) => {
+      window.location.reload();
+    });
   }
 
 }

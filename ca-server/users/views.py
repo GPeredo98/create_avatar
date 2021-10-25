@@ -8,7 +8,6 @@ import bcrypt
 users = Blueprint('users', __name__)
 
 @users.route('/list')
-@cross_origin(origin='*')
 def obtener_usuarios():
     try:
         lista_usuarios = User.query.all()
@@ -22,7 +21,6 @@ def obtener_usuarios():
 def obtener_datos_usuario(id_user):
     try:
         token = get_jwt_identity()
-        print(token)
         usuario = User.query.get(id_user)
         if usuario is not None:
             return jsonify({'data': User.Schema().dump(usuario), 'success': True, 'message': 'Datos del usuario'})
@@ -76,10 +74,3 @@ def login_usuario():
     except Exception as e:
         return jsonify({'data': str(e), 'success': False, 'message': 'Ocurrió un error en el servidor'})
 
-@users.route('/get_images/<image>')
-def get_image(image):
-    if request.args.get('type') == '1':
-       filename = 'ok.gif'
-    else:
-       filename = 'static/images/atuendos/'+image+'.png'
-    return send_file(filename, mimetype='image/gif')

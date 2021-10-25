@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { UsersModule } from './users/users.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { AvatarsModule } from './avatars/avatars.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ToastrModule } from 'ngx-toastr';
     FormsModule,
     HttpClientModule,
     UsersModule,
+    AvatarsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
   ],

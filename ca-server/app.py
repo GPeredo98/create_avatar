@@ -2,7 +2,7 @@
 from flask import Flask
 from flask_cors import CORS
 from utilities import db, ma, jwt
-# from productos.views import productos
+from avatars.views import avatars
 from users.views import users
 
 
@@ -16,6 +16,7 @@ def create_app(config_file='settings.py'):
     with application.app_context():
         db.create_all()
     application.register_blueprint(users, url_prefix='/users')
+    application.register_blueprint(avatars, url_prefix='/avatars')
     return application
 
 

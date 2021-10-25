@@ -11,7 +11,7 @@ export class AvatarComponent implements OnInit {
   @Input() rostro: any;
   @Input() cabello: any;
   @Input() atuendo: any;
-  @Input() lentes: any;
+  @Input() lente: any;
   @Input() vellofacial: any;
   @Input() sombrero: any;
 
